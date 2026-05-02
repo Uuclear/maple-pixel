@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+[data-theme="maple"] {
+  --bg-primary: #2C1810;
+  --bg-secondary: #4A2C1A;
+  --bg-tertiary: #6B3A2A;
+  --border-color: #8B5E3C;
+  --text-primary: #F5DEB3;
+  --text-secondary: #D2B48C;
+  --accent: #FFD700;
+  --accent-hover: #FFA500;
+  --danger: #E83030;
+  --success: #22C55E;
+  --pixel-shadow: 4px 4px 0px #1A0F08;
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Press Start 2P", monospace;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 10px;
+    line-height: 1.6;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--bg-primary);
+  }
+}
+
+@layer components {
+  .pixel-border {
+    border: 2px solid var(--border-color);
+    box-shadow: 4px 4px 0px #1A0F08;
+  }
+
+  .pixel-btn {
+    border: 2px solid var(--border-color);
+    box-shadow: 2px 2px 0px #1A0F08;
+    transition: all 0.05s ease;
+  }
+
+  .pixel-btn:hover {
+    box-shadow: 1px 1px 0px #1A0F08;
+    transform: translate(1px, 1px);
+  }
+
+  .pixel-btn:active {
+    box-shadow: none;
+    transform: translate(2px, 2px);
+  }
+
+  .pixel-btn.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  .pixel-panel {
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    box-shadow: 4px 4px 0px #1A0F08;
+  }
+
+  .checkerboard {
+    background-image:
+      linear-gradient(45deg, #ccc 25%, transparent 25%),
+      linear-gradient(-45deg, #ccc 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #ccc 75%),
+      linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  }
+}
