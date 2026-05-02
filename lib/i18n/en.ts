@@ -1,0 +1,56 @@
+export const en = {
+  common: {
+    title: "Pixel Studio — Pixel Art Workshop",
+    startCreating: "Start Creating",
+    settings: "Settings",
+    cancel: "Cancel",
+    create: "Create",
+    export: "Export",
+    saving: "Saving...",
+    exporting: "Exporting...",
+  },
+  tools: {
+    pencil: "Pencil",
+    eraser: "Eraser",
+    fill: "Fill",
+    eyedropper: "Eyedropper",
+    selection: "Selection",
+    line: "Line",
+  },
+  panels: {
+    resources: "Resource Browser",
+    tools: "Tools",
+    palette: "Palette",
+    layers: "Layers",
+    brush: "Brush",
+    brushSize: "Size",
+  },
+  resources: {
+    items: "Items",
+    mobs: "Mobs",
+    npcs: "NPCs",
+    maps: "Maps",
+    search: "Search resources...",
+    placeholder: "Resources appear after connecting to maplestory.io API",
+  },
+  canvas: {
+    newCanvas: "New Canvas",
+    presetSize: "Preset Size",
+    width: "Width",
+    height: "Height",
+  },
+  timeline: {
+    copy: "Copy",
+    delete: "Delete",
+    loop: "Loop",
+  },
+  settings: {
+    title: "Settings",
+    language: "Language",
+    theme: "Theme",
+    gridSize: "Grid Size",
+    shortcuts: "Shortcuts",
+  },
+} as const;
+
+export type EnType = typeof en;
