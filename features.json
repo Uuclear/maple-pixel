@@ -26,7 +26,7 @@
         "Playback toggle and FPS control works",
         "Zoom and grid toggle work"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "category": "canvas-engine",
@@ -41,7 +41,7 @@
         "Fill tool floods connected area",
         "Eyedropper picks color from pixel"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "category": "canvas-ui",
@@ -55,7 +55,7 @@
         "Zoom works via scroll wheel",
         "Grid overlay can be toggled"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "category": "sidebar",
@@ -71,7 +71,7 @@
         "Layer add button creates new layer",
         "Brush size slider controls brush radius"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "category": "timeline",
@@ -87,7 +87,7 @@
         "FPS control adjusts animation speed",
         "Loop checkbox enables continuous playback"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "category": "export",
@@ -111,7 +111,7 @@
         "Theme CSS file has MapleStory pixel styling",
         "Scrollbar, range inputs styled in pixel theme"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "category": "integration",
@@ -125,7 +125,7 @@
         "npm run build succeeds",
         "Dev server starts without errors"
       ],
-      "passes": false
+      "passes": true
     },
     {
       "category": "history",
@@ -140,7 +140,7 @@
         "Redo re-executes undone command",
         "canUndo/canRedo flags accurate"
       ],
-      "passes": false
+      "passes": true
     }
   ]
 }
