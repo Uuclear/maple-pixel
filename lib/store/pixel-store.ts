@@ -1,7 +1,34 @@
 import { create } from "zustand";
 import type { PixelState, Layer, Frame, ToolType } from "@/lib/types";
+import { HistoryManager, Command } from "@/lib/canvas/history";
 
 const generateId = () => Math.random().toString(36).slice(2, 9);
+
+const history = new HistoryManager(50);
+
+type LayerSnapshot = {
+  id: string;
+  pixels: Map<string, string>;
+};
+
+function snapshotLayers(layers: Layer[]): LayerSnapshot[] {
+  return layers.map((l) => ({
+    id: l.id,
+    pixels: new Map(l.pixels),
+  }));
+}
+
+function restoreLayersFromSnapshot(
+  layers: Layer[],
+  snapshot: LayerSnapshot[]
+): Layer[] {
+  return layers.map((l) => {
+    const snap = snapshot.find((s) => s.id === l.id);
+    return snap
+      ? { ...l, pixels: new Map(snap.pixels) }
+      : l;
+  });
+}
 
 const createLayer = (name: string): Layer => ({
   id: generateId(),
@@ -102,26 +129,66 @@ export const usePixelStore = create<PixelState>((set, get) => {
           return state;
         const layer = state.layers.find((l) => l.id === state.activeLayerId);
         if (!layer || layer.locked) return state;
+        const key = `${x},${y}`;
+
+        const snap = snapshotLayers(state.layers);
+        const cmd: Command = {
+          execute: () => {},
+          undo: () => {
+            set((s) => ({
+              layers: restoreLayersFromSnapshot(s.layers, snap),
+              canUndo: history.canUndo,
+              canRedo: history.canRedo,
+            }));
+          },
+        };
+        history.push(cmd);
+
         const newLayers = state.layers.map((l) => {
           if (l.id !== state.activeLayerId) return l;
           const newPixels = new Map(l.pixels);
-          newPixels.set(`${x},${y}`, color);
+          newPixels.set(key, color);
           return { ...l, pixels: newPixels };
         });
-        return { layers: newLayers };
+        return {
+          layers: newLayers,
+          canUndo: history.canUndo,
+          canRedo: history.canRedo,
+        };
       }),
 
     clearPixel: (x, y) =>
       set((state) => {
         const layer = state.layers.find((l) => l.id === state.activeLayerId);
         if (!layer || layer.locked) return state;
+        const key = `${x},${y}`;
+        const oldColor = layer.pixels.get(key);
+        if (oldColor === undefined) return state;
+
+        const snap = snapshotLayers(state.layers);
+        const cmd: Command = {
+          execute: () => {},
+          undo: () => {
+            set((s) => ({
+              layers: restoreLayersFromSnapshot(s.layers, snap),
+              canUndo: history.canUndo,
+              canRedo: history.canRedo,
+            }));
+          },
+        };
+        history.push(cmd);
+
         const newLayers = state.layers.map((l) => {
           if (l.id !== state.activeLayerId) return l;
           const newPixels = new Map(l.pixels);
-          newPixels.delete(`${x},${y}`);
+          newPixels.delete(key);
           return { ...l, pixels: newPixels };
         });
-        return { layers: newLayers };
+        return {
+          layers: newLayers,
+          canUndo: history.canUndo,
+          canRedo: history.canRedo,
+        };
       }),
 
     floodFill: (startX, startY, fillColor) =>
@@ -131,6 +198,19 @@ export const usePixelStore = create<PixelState>((set, get) => {
         const key = `${startX},${startY}`;
         const targetColor = layer.pixels.get(key);
         if (targetColor === fillColor) return state;
+
+        const snap = snapshotLayers(state.layers);
+        const cmd: Command = {
+          execute: () => {},
+          undo: () => {
+            set((s) => ({
+              layers: restoreLayersFromSnapshot(s.layers, snap),
+              canUndo: history.canUndo,
+              canRedo: history.canRedo,
+            }));
+          },
+        };
+        history.push(cmd);
 
         const newPixels = new Map(layer.pixels);
         const queue: [number, number][] = [[startX, startY]];
@@ -172,17 +252,36 @@ export const usePixelStore = create<PixelState>((set, get) => {
           layers: state.layers.map((l) =>
             l.id === state.activeLayerId ? { ...l, pixels: newPixels } : l
           ),
+          canUndo: history.canUndo,
+          canRedo: history.canRedo,
         };
       }),
 
     clearLayer: () =>
-      set((state) => ({
-        layers: state.layers.map((l) =>
-          l.id === state.activeLayerId
-            ? { ...l, pixels: new Map<string, string>() }
-            : l
-        ),
-      })),
+      set((state) => {
+        const snap = snapshotLayers(state.layers);
+        const cmd: Command = {
+          execute: () => {},
+          undo: () => {
+            set((s) => ({
+              layers: restoreLayersFromSnapshot(s.layers, snap),
+              canUndo: history.canUndo,
+              canRedo: history.canRedo,
+            }));
+          },
+        };
+        history.push(cmd);
+
+        return {
+          layers: state.layers.map((l) =>
+            l.id === state.activeLayerId
+              ? { ...l, pixels: new Map<string, string>() }
+              : l
+          ),
+          canUndo: history.canUndo,
+          canRedo: history.canRedo,
+        };
+      }),
 
     // Tools
     currentTool: "pencil" as ToolType,
@@ -260,11 +359,21 @@ export const usePixelStore = create<PixelState>((set, get) => {
       set((state) => ({ isPlaying: !state.isPlaying })),
     setFps: (fps) => set({ fps: Math.max(1, Math.min(60, fps)) }),
 
-    // History (stub — will be enhanced in Task 10)
-    undo: () => {},
-    redo: () => {},
-    canUndo: false,
-    canRedo: false,
+    // History
+    undo: () => {
+      history.undo();
+      set((state) => ({ canUndo: history.canUndo, canRedo: history.canRedo }));
+    },
+    redo: () => {
+      history.redo();
+      set((state) => ({ canUndo: history.canUndo, canRedo: history.canRedo }));
+    },
+    get canUndo() {
+      return history.canUndo;
+    },
+    get canRedo() {
+      return history.canRedo;
+    },
 
     // View
     zoom: 1,
