@@ -2,16 +2,17 @@
 
 import { usePixelStore } from "@/lib/store/pixel-store";
 import { useState } from "react";
-import { NewCanvasModal } from "@/components/modals/new-canvas-modal";
-import { ExportModal } from "@/components/modals/export-modal";
-import { ImportModal } from "@/components/modals/import-modal";
 
-export function Header() {
+export interface HeaderActions {
+  onNew: () => void;
+  onImport: () => void;
+  onExport: () => void;
+  onLangToggle: () => void;
+}
+
+export function Header({ onNew, onImport, onExport, onLangToggle }: HeaderActions) {
   const { canvas, frames } = usePixelStore();
   const [lang, setLang] = useState<"zh" | "en">("zh");
-  const [showNewCanvas, setShowNewCanvas] = useState(false);
-  const [showImport, setShowImport] = useState(false);
-  const [showExport, setShowExport] = useState(false);
 
   const t = lang === "zh"
     ? { newCanvas: "新建", import_: "导入", export: "导出", zh: "中文", en: "EN" }
@@ -43,7 +44,7 @@ export function Header() {
             background: "var(--bg-tertiary)",
             color: "var(--text-primary)",
           }}
-          onClick={() => setShowNewCanvas(true)}
+          onClick={onNew}
         >
           {t.newCanvas}
         </button>
@@ -53,7 +54,7 @@ export function Header() {
             background: "var(--bg-tertiary)",
             color: "var(--text-primary)",
           }}
-          onClick={() => setShowImport(true)}
+          onClick={onImport}
         >
           {t.import_}
         </button>
@@ -63,7 +64,7 @@ export function Header() {
             background: "var(--accent)",
             color: "var(--bg-primary)",
           }}
-          onClick={() => setShowExport(true)}
+          onClick={onExport}
         >
           {t.export}
         </button>
@@ -73,14 +74,15 @@ export function Header() {
             background: "var(--bg-tertiary)",
             color: "var(--text-primary)",
           }}
-          onClick={() => setLang(lang === "zh" ? "en" : "zh")}
+          onClick={() => {
+            const newLang = lang === "zh" ? "en" : "zh";
+            setLang(newLang);
+            onLangToggle();
+          }}
         >
           {lang === "zh" ? t.zh : t.en}
         </button>
       </div>
-      {showNewCanvas && <NewCanvasModal onClose={() => setShowNewCanvas(false)} />}
-      {showImport && <ImportModal onClose={() => setShowImport(false)} />}
-      {showExport && <ExportModal onClose={() => setShowExport(false)} />}
     </header>
   );
 }
