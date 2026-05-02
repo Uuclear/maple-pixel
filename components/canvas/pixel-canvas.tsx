@@ -10,6 +10,8 @@ export function PixelCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isDrawing = useRef(false);
   const lastPixel = useRef<{ x: number; y: number } | null>(null);
+  // Store computed pixelSize so getGridCoords uses the same value as render
+  const pixelSizeRef = useRef(1);
 
   const {
     canvas,
@@ -26,22 +28,28 @@ export function PixelCanvas() {
 
   const render = useCallback(() => {
     const el = canvasRef.current;
-    if (!el) return;
+    const container = containerRef.current;
+    if (!el || !container) return;
     const ctx = el.getContext("2d");
     if (!ctx) return;
 
-    const pixelSize = calculatePixelSize(
-      canvas,
-      el.clientWidth || 100,
-      el.clientHeight || 100,
-      zoom
-    );
+    // Use container dimensions to constrain canvas display size
+    const containerWidth = container.clientWidth || 100;
+    const containerHeight = container.clientHeight || 100;
+
+    const pixelSize = calculatePixelSize(canvas, containerWidth, containerHeight, zoom);
+    pixelSizeRef.current = pixelSize;
 
     const totalWidth = canvas.width * pixelSize;
     const totalHeight = canvas.height * pixelSize;
 
+    // Set buffer dimensions
     el.width = totalWidth;
     el.height = totalHeight;
+
+    // Set CSS display dimensions so canvas is visible
+    el.style.width = `${totalWidth}px`;
+    el.style.height = `${totalHeight}px`;
 
     renderCanvas(ctx, canvas, layers, showGrid, pixelSize, totalWidth, totalHeight);
   }, [canvas, layers, showGrid, zoom]);
@@ -54,8 +62,7 @@ export function PixelCanvas() {
     const el = canvasRef.current;
     if (!el) return { x: 0, y: 0 };
     const rect = el.getBoundingClientRect();
-    const pixelSize = calculatePixelSize(canvas, el.clientWidth, el.clientHeight, zoom);
-    return screenToGrid(e.clientX, e.clientY, rect.left, rect.top, pixelSize);
+    return screenToGrid(e.clientX, e.clientY, rect.left, rect.top, pixelSizeRef.current);
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {

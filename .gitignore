@@ -29,3 +29,6 @@ yarn-error.log*
 
 # TypeScript build info
 tsconfig.tsbuildinfo
+
+# Playwright test artifacts
+.playwright-mcp/

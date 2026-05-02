@@ -2,21 +2,31 @@
 
 import { PixelCanvas } from "./pixel-canvas";
 import { usePixelStore } from "@/lib/store/pixel-store";
+import { useEffect, useRef } from "react";
 
 export function CanvasContainer() {
   const { zoom, setZoom, toggleGrid, showGrid } = usePixelStore();
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? -0.5 : 0.5;
-    setZoom(Math.max(0.5, Math.min(32, zoom + delta)));
-  };
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.5 : 0.5;
+      setZoom(Math.max(0.5, Math.min(32, zoom + delta)));
+    };
+
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, [zoom, setZoom]);
 
   return (
     <div
+      ref={containerRef}
       className="flex-1 relative overflow-hidden"
       style={{ background: "var(--bg-primary)" }}
-      onWheel={handleWheel}
     >
       <PixelCanvas />
       {/* Zoom indicator */}
