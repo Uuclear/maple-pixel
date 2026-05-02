@@ -32,3 +32,8 @@ tsconfig.tsbuildinfo
 
 # Playwright test artifacts
 .playwright-mcp/
+
+# Agent transcripts
+agent-tools/
+agent-transcripts/
+terminals/
