@@ -1,0 +1,79 @@
+# Pixel Studio Progress
+
+## Status
+- **Current Phase**: Task 2 - Shared Types and State Store
+- **Last Updated**: 2026-05-02 13:45
+- **Build Status**: ✅ PASSING
+
+## Completed Tasks
+
+### Task 1: Project Bootstrap ✅ COMPLETED
+- [x] package.json
+- [x] next.config.ts
+- [x] tsconfig.json
+- [x] tailwind.config.ts
+- [x] postcss.config.mjs
+- [x] app/globals.css
+- [x] Install dependencies (372 packages)
+- [x] Verify build (npm run build ✓)
+- [x] Commit (e27455f)
+
+### Task 2: Shared Types and State Store (IN PROGRESS)
+- [ ] lib/types.ts
+- [ ] lib/store/pixel-store.ts
+
+### Task 3: Canvas Engine and Renderer (PENDING)
+- [ ] lib/canvas/engine.ts
+- [ ] lib/canvas/renderer.ts
+- [ ] lib/canvas/grid.ts
+- [ ] lib/canvas/tools/pencil.ts
+- [ ] lib/canvas/tools/eraser.ts
+- [ ] lib/canvas/tools/fill.ts
+- [ ] lib/canvas/tools/eyedropper.ts
+
+### Task 4: Canvas UI Components (PENDING)
+- [ ] app/layout.tsx
+- [ ] app/page.tsx
+- [ ] app/canvas/page.tsx
+- [ ] components/header/index.tsx
+- [ ] components/canvas/index.tsx
+- [ ] components/canvas/pixel-canvas.tsx
+
+### Task 5: Sidebar Components (PENDING)
+- [ ] components/sidebar-left/index.tsx
+- [ ] components/sidebar-left/resource-browser/index.tsx
+- [ ] components/sidebar-right/index.tsx
+- [ ] components/sidebar-right/tool-panel/index.tsx
+- [ ] components/sidebar-right/color-picker/index.tsx
+- [ ] components/sidebar-right/layer-list/index.tsx
+- [ ] components/sidebar-right/brush-settings/index.tsx
+
+### Task 6: Timeline Component (PENDING)
+- [ ] components/timeline/index.tsx
+- [ ] components/timeline/frame-strip.tsx
+- [ ] components/timeline/playback-controls.tsx
+
+### Task 7: Modals and Export (PENDING)
+- [ ] lib/canvas/export.ts
+- [ ] components/modals/new-canvas-modal.tsx
+- [ ] components/modals/export-modal.tsx
+
+### Task 8: Settings Page and i18n (PENDING)
+- [ ] app/settings/page.tsx
+- [ ] lib/i18n/zh.ts
+- [ ] lib/i18n/en.ts
+- [ ] lib/theme/maple.css
+
+### Task 9: Integrate and Polish (PENDING)
+- [ ] Integrate modals into header
+- [ ] Add keyboard shortcuts
+- [ ] Test dev server
+- [ ] Build verification
+- [ ] Commit
+
+### Task 10: History System (PENDING)
+- [ ] lib/canvas/history.ts
+- [ ] Update store with history integration
+
+## Session Notes
+- 2026-05-02: Project initialized, plans and specs created. Starting Task 1.

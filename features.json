@@ -1,0 +1,146 @@
+{
+  "features": [
+    {
+      "category": "bootstrap",
+      "description": "Next.js 15 project with TypeScript, Tailwind CSS, and pixel theme styling",
+      "steps": [
+        "package.json has correct dependencies",
+        "tsconfig.json compiles TypeScript",
+        "tailwind.config.ts configured with MapleStory theme colors",
+        "app/globals.css has pixel theme CSS variables and components",
+        "npm install succeeds",
+        "npm run build succeeds"
+      ],
+      "passes": true
+    },
+    {
+      "category": "state",
+      "description": "Zustand pixel store with full canvas state management",
+      "steps": [
+        "lib/types.ts defines CanvasConfig, Layer, Frame, ToolType, PixelState interfaces",
+        "lib/store/pixel-store.ts implements all state methods",
+        "Canvas resize works",
+        "Layer add/remove/visibility/lock works",
+        "Pixel set/clear/floodFill works",
+        "Frame add/delete/duplicate works",
+        "Playback toggle and FPS control works",
+        "Zoom and grid toggle work"
+      ],
+      "passes": false
+    },
+    {
+      "category": "canvas-engine",
+      "description": "Canvas 2D rendering engine with drawing tools",
+      "steps": [
+        "Engine calculates optimal pixelSize for canvas fit",
+        "Renderer draws checkerboard background",
+        "Renderer draws layer pixels in order",
+        "Grid overlay renders correctly",
+        "Pencil tool draws pixels",
+        "Eraser tool removes pixels",
+        "Fill tool floods connected area",
+        "Eyedropper picks color from pixel"
+      ],
+      "passes": false
+    },
+    {
+      "category": "canvas-ui",
+      "description": "Canvas UI with layout, header, and interactive canvas",
+      "steps": [
+        "Landing page renders with pixel theme",
+        "Canvas page shows full layout with sidebars and timeline",
+        "Header shows canvas size and frame count",
+        "Canvas responds to mouse clicks (draws/erases pixels)",
+        "Mouse drag draws continuous lines",
+        "Zoom works via scroll wheel",
+        "Grid overlay can be toggled"
+      ],
+      "passes": false
+    },
+    {
+      "category": "sidebar",
+      "description": "Left sidebar with resource browser, right sidebar with tools/colors/layers/brush",
+      "steps": [
+        "Left sidebar has category tabs (Items/Mobs/NPCs/Maps)",
+        "Left sidebar has search input",
+        "Tool panel shows tool buttons (pencil/eraser/fill/eyedropper)",
+        "Tool selection updates current tool",
+        "Color picker shows palette grid",
+        "Color selection updates current color",
+        "Layer list shows layers with visibility/lock toggles",
+        "Layer add button creates new layer",
+        "Brush size slider controls brush radius"
+      ],
+      "passes": false
+    },
+    {
+      "category": "timeline",
+      "description": "Animation timeline with frame strip and playback",
+      "steps": [
+        "Frame strip shows all frames as thumbnails",
+        "Clicking frame selects it",
+        "Add frame button creates new frame",
+        "Delete frame button removes frame",
+        "Duplicate frame button copies frame",
+        "Play button starts animation playback",
+        "Pause button stops animation",
+        "FPS control adjusts animation speed",
+        "Loop checkbox enables continuous playback"
+      ],
+      "passes": false
+    },
+    {
+      "category": "export",
+      "description": "Export canvas as PNG, GIF animation, or sprite sheet",
+      "steps": [
+        "PNG export downloads current frame",
+        "Sprite sheet export combines all frames horizontally",
+        "GIF export creates animated GIF using gifenc",
+        "Export modal shows format selection and scale slider",
+        "New canvas modal allows preset and custom sizes"
+      ],
+      "passes": true
+    },
+    {
+      "category": "i18n",
+      "description": "Chinese and English translations throughout the app",
+      "steps": [
+        "lib/i18n/zh.ts has all Chinese translations",
+        "lib/i18n/en.ts has all English translations",
+        "Settings page allows language switching",
+        "Theme CSS file has MapleStory pixel styling",
+        "Scrollbar, range inputs styled in pixel theme"
+      ],
+      "passes": false
+    },
+    {
+      "category": "integration",
+      "description": "All components integrated, modals accessible, keyboard shortcuts work",
+      "steps": [
+        "New Canvas button opens modal and resizes canvas",
+        "Export button opens modal and downloads files",
+        "Language toggle works in header",
+        "Ctrl+Z triggers undo",
+        "Ctrl+Y triggers redo",
+        "npm run build succeeds",
+        "Dev server starts without errors"
+      ],
+      "passes": false
+    },
+    {
+      "category": "history",
+      "description": "Undo/redo system with command pattern and 50-entry history",
+      "steps": [
+        "HistoryManager class with push/undo/redo methods",
+        "Max 50 history entries",
+        "setPixel pushes command to history",
+        "clearPixel pushes command to history",
+        "floodFill pushes command to history",
+        "Undo restores previous layer state",
+        "Redo re-executes undone command",
+        "canUndo/canRedo flags accurate"
+      ],
+      "passes": false
+    }
+  ]
+}
