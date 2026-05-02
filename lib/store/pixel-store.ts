@@ -283,6 +283,53 @@ export const usePixelStore = create<PixelState>((set, get) => {
         };
       }),
 
+    importPixels: (grid, center = true) =>
+      set((state) => {
+        const layer = state.layers.find((l) => l.id === state.activeLayerId);
+        if (!layer || layer.locked) return state;
+
+        const offsetX = center
+          ? Math.floor((state.canvas.width - grid.width) / 2)
+          : 0;
+        const offsetY = center
+          ? Math.floor((state.canvas.height - grid.height) / 2)
+          : 0;
+
+        const snap = snapshotLayers(state.layers);
+        const cmd: Command = {
+          execute: () => {},
+          undo: () => {
+            set((s) => ({
+              layers: restoreLayersFromSnapshot(s.layers, snap),
+              canUndo: history.canUndo,
+              canRedo: history.canRedo,
+            }));
+          },
+        };
+        history.push(cmd);
+
+        const newPixels = new Map(layer.pixels);
+        for (let y = 0; y < grid.height; y++) {
+          for (let x = 0; x < grid.width; x++) {
+            const color = grid.pixels[y]?.[x];
+            if (!color || color === "transparent") continue;
+            const px = x + offsetX;
+            const py = y + offsetY;
+            if (px >= 0 && px < state.canvas.width && py >= 0 && py < state.canvas.height) {
+              newPixels.set(`${px},${py}`, color);
+            }
+          }
+        }
+
+        return {
+          layers: state.layers.map((l) =>
+            l.id === state.activeLayerId ? { ...l, pixels: newPixels } : l
+          ),
+          canUndo: history.canUndo,
+          canRedo: history.canRedo,
+        };
+      }),
+
     // Tools
     currentTool: "pencil" as ToolType,
     setCurrentTool: (tool) => set({ currentTool: tool }),

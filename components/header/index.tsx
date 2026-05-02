@@ -4,16 +4,18 @@ import { usePixelStore } from "@/lib/store/pixel-store";
 import { useState } from "react";
 import { NewCanvasModal } from "@/components/modals/new-canvas-modal";
 import { ExportModal } from "@/components/modals/export-modal";
+import { ImportModal } from "@/components/modals/import-modal";
 
 export function Header() {
   const { canvas, frames } = usePixelStore();
   const [lang, setLang] = useState<"zh" | "en">("zh");
   const [showNewCanvas, setShowNewCanvas] = useState(false);
+  const [showImport, setShowImport] = useState(false);
   const [showExport, setShowExport] = useState(false);
 
   const t = lang === "zh"
-    ? { newCanvas: "新建", export: "导出", settings: "设置", zh: "中文", en: "EN" }
-    : { newCanvas: "New", export: "Export", settings: "Settings", zh: "中文", en: "EN" };
+    ? { newCanvas: "新建", import_: "导入", export: "导出", zh: "中文", en: "EN" }
+    : { newCanvas: "New", import_: "Import", export: "Export", zh: "中文", en: "EN" };
 
   return (
     <header
@@ -48,6 +50,16 @@ export function Header() {
         <button
           className="pixel-btn px-3 py-1"
           style={{
+            background: "var(--bg-tertiary)",
+            color: "var(--text-primary)",
+          }}
+          onClick={() => setShowImport(true)}
+        >
+          {t.import_}
+        </button>
+        <button
+          className="pixel-btn px-3 py-1"
+          style={{
             background: "var(--accent)",
             color: "var(--bg-primary)",
           }}
@@ -67,6 +79,7 @@ export function Header() {
         </button>
       </div>
       {showNewCanvas && <NewCanvasModal onClose={() => setShowNewCanvas(false)} />}
+      {showImport && <ImportModal onClose={() => setShowImport(false)} />}
       {showExport && <ExportModal onClose={() => setShowExport(false)} />}
     </header>
   );

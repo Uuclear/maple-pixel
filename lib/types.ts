@@ -55,6 +55,7 @@ export interface PixelState {
   clearPixel: (x: number, y: number) => void;
   floodFill: (x: number, y: number, color: string) => void;
   clearLayer: () => void;
+  importPixels: (grid: import("@/lib/canvas/image-processor").PixelGrid, center?: boolean) => void;
 
   // Tools
   currentTool: ToolType;

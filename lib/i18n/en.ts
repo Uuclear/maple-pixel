@@ -50,6 +50,10 @@ export const en = {
     theme: "Theme",
     gridSize: "Grid Size",
     shortcuts: "Shortcuts",
+    aiProvider: "AI Provider",
+    apiKey: "API Key",
+    model: "Model",
+    aiConfigHint: "Configured AI will be used instead of mock data",
   },
 } as const;
 

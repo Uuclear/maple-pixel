@@ -50,6 +50,10 @@ export const zh = {
     theme: "主题",
     gridSize: "网格大小",
     shortcuts: "快捷键",
+    aiProvider: "AI 提供商",
+    apiKey: "API Key",
+    model: "模型",
+    aiConfigHint: "配置后将使用真实 AI 而非模拟数据",
   },
 } as const;
 
